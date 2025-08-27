@@ -1,0 +1,448 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.kitchen-background {
+    position: relative;
+    background: linear-gradient(180deg, #e8f4f8 0%, #f0f8ff 50%, #f5f5dc 100%);
+    border-radius: 20px;
+    padding: 40px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+/* Kitchen decorative elements */
+.kitchen-elements {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.pot {
+    position: absolute;
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(145deg, #8b4513, #a0522d);
+    border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.pot-1 {
+    top: 20px;
+    right: 40px;
+    transform: rotate(15deg);
+}
+
+.pot-2 {
+    top: 100px;
+    right: 120px;
+    transform: rotate(-10deg);
+}
+
+.spoon {
+    position: absolute;
+    width: 8px;
+    height: 80px;
+    background: linear-gradient(90deg, #d4af37, #ffd700);
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.spoon-1 {
+    top: 60px;
+    left: 60px;
+    transform: rotate(45deg);
+}
+
+.spoon-2 {
+    top: 150px;
+    left: 120px;
+    transform: rotate(-30deg);
+}
+
+.plate {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    background: linear-gradient(145deg, #ffffff, #f0f0f0);
+    border-radius: 50%;
+    border: 2px solid #ddd;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.plate-1 {
+    top: 80px;
+    left: 200px;
+}
+
+.plate-2 {
+    top: 180px;
+    left: 80px;
+}
+
+.main-content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+}
+
+.title {
+    font-size: 3rem;
+    font-weight: 700;
+    color: #2c3e50;
+    margin-bottom: 10px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.subtitle {
+    font-size: 1.2rem;
+    color: #7f8c8d;
+    margin-bottom: 40px;
+    font-weight: 400;
+}
+
+/* Gacha Machine */
+.gacha-machine {
+    margin: 40px 0;
+    display: flex;
+    justify-content: center;
+}
+
+.machine-body {
+    background: linear-gradient(145deg, #34495e, #2c3e50);
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+    position: relative;
+    min-width: 300px;
+}
+
+.machine-top {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.handle {
+    width: 80px;
+    height: 20px;
+    background: linear-gradient(90deg, #e74c3c, #c0392b);
+    border-radius: 10px;
+    margin: 0 auto;
+    position: relative;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.handle:hover {
+    transform: scale(1.1);
+}
+
+.machine-window {
+    background: linear-gradient(145deg, #ecf0f1, #bdc3c7);
+    border-radius: 15px;
+    padding: 30px;
+    margin-bottom: 20px;
+    border: 3px solid #95a5a6;
+    min-height: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.result-display {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #2c3e50;
+    text-align: center;
+    min-height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.placeholder {
+    color: #95a5a6;
+    font-style: italic;
+}
+
+.machine-bottom {
+    text-align: center;
+}
+
+.spin-button {
+    background: linear-gradient(145deg, #e74c3c, #c0392b);
+    color: white;
+    border: none;
+    padding: 15px 40px;
+    border-radius: 25px;
+    font-size: 1.2rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.spin-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+}
+
+.spin-button:active {
+    transform: translateY(0);
+}
+
+.spin-button:disabled {
+    background: #95a5a6;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* Controls Section */
+.controls-section {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+    margin-top: 40px;
+}
+
+.options-panel, .stats-panel {
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 15px;
+    padding: 25px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(10px);
+}
+
+.options-panel h3, .stats-panel h3 {
+    color: #2c3e50;
+    margin-bottom: 20px;
+    font-size: 1.3rem;
+    text-align: center;
+}
+
+.options-list {
+    margin-bottom: 20px;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.option-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 15px;
+    margin-bottom: 8px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    border-left: 4px solid #3498db;
+    transition: all 0.3s ease;
+}
+
+.option-item:hover {
+    background: #e9ecef;
+    transform: translateX(5px);
+}
+
+.option-text {
+    font-weight: 500;
+    color: #2c3e50;
+}
+
+.remove-btn {
+    background: #e74c3c;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    transition: background 0.3s ease;
+}
+
+.remove-btn:hover {
+    background: #c0392b;
+}
+
+.add-option {
+    display: flex;
+    gap: 10px;
+}
+
+.add-option input {
+    flex: 1;
+    padding: 10px 15px;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: border-color 0.3s ease;
+}
+
+.add-option input:focus {
+    outline: none;
+    border-color: #3498db;
+}
+
+.add-option button {
+    background: #27ae60;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background 0.3s ease;
+}
+
+.add-option button:hover {
+    background: #229954;
+}
+
+/* Stats */
+.stat-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.stat-item:last-child {
+    border-bottom: none;
+}
+
+.stat-label {
+    color: #7f8c8d;
+    font-weight: 500;
+}
+
+ .stat-value {
+     color: #2c3e50;
+     font-weight: 600;
+     font-size: 1.1rem;
+ }
+ 
+ /* Reset Button */
+ .reset-section {
+     margin-top: 20px;
+     text-align: center;
+     padding-top: 15px;
+     border-top: 1px solid #eee;
+ }
+ 
+ .reset-button {
+     background: linear-gradient(145deg, #f39c12, #e67e22);
+     color: white;
+     border: none;
+     padding: 10px 20px;
+     border-radius: 8px;
+     cursor: pointer;
+     font-weight: 600;
+     font-size: 0.9rem;
+     transition: all 0.3s ease;
+     display: flex;
+     align-items: center;
+     gap: 8px;
+     margin: 0 auto;
+ }
+ 
+ .reset-button:hover {
+     background: linear-gradient(145deg, #e67e22, #d35400);
+     transform: translateY(-2px);
+     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+ }
+ 
+ .reset-button:active {
+     transform: translateY(0);
+ }
+ 
+ .reset-icon {
+     font-size: 1rem;
+ }
+
+/* Animations */
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.spinning {
+    animation: spin 0.5s ease-in-out;
+}
+
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+    40% { transform: translateY(-10px); }
+    60% { transform: translateY(-5px); }
+}
+
+.bounce {
+    animation: bounce 1s ease-in-out;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .container {
+        padding: 10px;
+    }
+    
+    .kitchen-background {
+        padding: 20px;
+    }
+    
+    .title {
+        font-size: 2rem;
+    }
+    
+    .controls-section {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    
+    .machine-body {
+        min-width: 250px;
+        padding: 20px;
+    }
+    
+    .kitchen-elements {
+        display: none;
+    }
+}
+
+@media (max-width: 480px) {
+    .title {
+        font-size: 1.5rem;
+    }
+    
+    .subtitle {
+        font-size: 1rem;
+    }
+    
+    .machine-body {
+        min-width: 200px;
+        padding: 15px;
+    }
+    
+    .result-display {
+        font-size: 1.2rem;
+        padding: 20px;
+    }
+}

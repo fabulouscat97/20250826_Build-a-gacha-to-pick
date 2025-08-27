@@ -1,0 +1,24 @@
+{
+  "name": "kitchen-gacha-machine",
+  "version": "1.0.0",
+  "description": "A fun and interactive decision-making gacha machine app with a beautiful kitchen theme",
+  "main": "index.html",
+  "scripts": {
+    "start": "open index.html",
+    "dev": "python -m http.server 8000",
+    "serve": "npx http-server -p 8000"
+  },
+  "keywords": [
+    "gacha",
+    "decision-maker",
+    "kitchen",
+    "random-picker",
+    "dinner-options",
+    "web-app"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "devDependencies": {},
+  "dependencies": {}
+}
+

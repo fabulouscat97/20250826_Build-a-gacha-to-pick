@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kitchen Gacha Machine</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <div class="kitchen-background">
+            <!-- Kitchen decorative elements -->
+            <div class="kitchen-elements">
+                <div class="pot pot-1"></div>
+                <div class="pot pot-2"></div>
+                <div class="spoon spoon-1"></div>
+                <div class="spoon spoon-2"></div>
+                <div class="plate plate-1"></div>
+                <div class="plate plate-2"></div>
+            </div>
+            
+            <div class="main-content">
+                <h1 class="title">🍳 Kitchen Gacha Machine</h1>
+                <p class="subtitle">Let fate decide what's for dinner!</p>
+                
+                <div class="gacha-machine">
+                    <div class="machine-body">
+                        <div class="machine-top">
+                            <div class="handle"></div>
+                        </div>
+                        <div class="machine-window">
+                            <div class="result-display" id="resultDisplay">
+                                <span class="placeholder">Ready to pick?</span>
+                            </div>
+                        </div>
+                        <div class="machine-bottom">
+                            <button class="spin-button" id="spinButton">
+                                <span class="button-text">SPIN!</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="controls-section">
+                    <div class="options-panel">
+                        <h3>Dinner Options</h3>
+                        <div class="options-list" id="optionsList">
+                            <!-- Options will be populated by JavaScript -->
+                        </div>
+                        
+                        <div class="add-option">
+                            <input type="text" id="newOption" placeholder="Add new option..." maxlength="30">
+                            <button id="addButton">Add</button>
+                        </div>
+                    </div>
+                    
+                                         <div class="stats-panel">
+                         <h3>Stats</h3>
+                         <div class="stat-item">
+                             <span class="stat-label">Total Picks:</span>
+                             <span class="stat-value" id="totalPicks">0</span>
+                         </div>
+                         <div class="stat-item">
+                             <span class="stat-label">Last Pick:</span>
+                             <span class="stat-value" id="lastPick">-</span>
+                         </div>
+                         <div class="reset-section">
+                             <button class="reset-button" id="resetButton">
+                                 <span class="reset-icon">🔄</span>
+                                 Reset Stats
+                             </button>
+                         </div>
+                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>
