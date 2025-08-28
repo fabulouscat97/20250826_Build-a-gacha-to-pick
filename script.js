@@ -10,11 +10,13 @@ class GachaMachine {
         this.totalPicks = 0;
         this.lastPick = null;
         this.isSpinning = false;
+        this.spinResults = []; // Array to store all spin results
         
         this.initializeElements();
         this.bindEvents();
         this.renderOptions();
         this.updateStats();
+        this.renderResults();
     }
     
          initializeElements() {
@@ -26,6 +28,7 @@ class GachaMachine {
          this.totalPicksElement = document.getElementById('totalPicks');
          this.lastPickElement = document.getElementById('lastPick');
          this.resetButton = document.getElementById('resetButton');
+         this.resultsList = document.getElementById('resultsList');
      }
     
          bindEvents() {
@@ -39,6 +42,10 @@ class GachaMachine {
     
     spin() {
         if (this.isSpinning || this.options.length === 0) return;
+        
+        // Check if all options have been selected
+        const alreadySelected = this.spinResults.map(result => result.option);
+        const availableOptions = this.options.filter(option => !alreadySelected.includes(option));
         
         this.isSpinning = true;
         this.spinButton.disabled = true;
@@ -56,9 +63,14 @@ class GachaMachine {
         const spinInterval = setInterval(() => {
             elapsed += updateInterval;
             
-            // Show random options during spin
+            // Show random options during spin (only from available options if any remain)
             if (elapsed < spinDuration - 500) {
-                const randomOption = this.options[Math.floor(Math.random() * this.options.length)];
+                let randomOption;
+                if (availableOptions.length > 0) {
+                    randomOption = availableOptions[Math.floor(Math.random() * availableOptions.length)];
+                } else {
+                    randomOption = this.options[Math.floor(Math.random() * this.options.length)];
+                }
                 this.resultDisplay.innerHTML = `<span class="spinning-text">${randomOption}</span>`;
             }
             
@@ -70,16 +82,61 @@ class GachaMachine {
     }
     
     completeSpin() {
-        // Select final result
-        const selectedOption = this.options[Math.floor(Math.random() * this.options.length)];
+        // Get already selected options
+        const alreadySelected = this.spinResults.map(result => result.option);
+        
+        // Get available options (not yet selected)
+        const availableOptions = this.options.filter(option => !alreadySelected.includes(option));
+        
+        let selectedOption;
+        let allItemsSelected = false;
+        
+        if (availableOptions.length === 0) {
+            // All items have been selected, show special message
+            allItemsSelected = true;
+            selectedOption = "🎉 All options completed!";
+        } else {
+            // Select from remaining available options
+            selectedOption = availableOptions[Math.floor(Math.random() * availableOptions.length)];
+        }
         
         // Update result display with bounce animation
         this.resultDisplay.innerHTML = `<span class="bounce">${selectedOption}</span>`;
         
-        // Update stats
-        this.totalPicks++;
-        this.lastPick = selectedOption;
-        this.updateStats();
+        if (!allItemsSelected) {
+            // Update stats only if we selected a real option
+            this.totalPicks++;
+            this.lastPick = selectedOption;
+            
+            // Add result to spinResults array with timestamp
+            const resultData = {
+                option: selectedOption,
+                timestamp: new Date(),
+                pickNumber: this.totalPicks
+            };
+            this.spinResults.push(resultData);
+            
+            this.updateStats();
+            this.renderResults();
+            this.renderOptions(); // Update visual indicators for selected items
+            
+            // Show notification about remaining options
+            const remainingCount = availableOptions.length - 1; // -1 because we just picked one
+            if (remainingCount > 0) {
+                setTimeout(() => {
+                    this.showNotification(`${remainingCount} unique option${remainingCount === 1 ? '' : 's'} remaining!`, 'info');
+                }, 1500);
+            } else {
+                setTimeout(() => {
+                    this.showNotification('🎊 Congratulations! You\'ve tried all options!', 'success');
+                }, 1500);
+            }
+        } else {
+            // All options completed - show special notification
+            setTimeout(() => {
+                this.showNotification('All options have been selected! Reset stats to start over.', 'info');
+            }, 1500);
+        }
         
         // Reset UI
         setTimeout(() => {
@@ -141,17 +198,76 @@ class GachaMachine {
     renderOptions() {
         this.optionsList.innerHTML = '';
         
+        // Get already selected options
+        const alreadySelected = this.spinResults.map(result => result.option);
+        
         this.options.forEach(option => {
             const optionItem = document.createElement('div');
-            optionItem.className = 'option-item';
+            const isSelected = alreadySelected.includes(option);
+            
+            optionItem.className = `option-item ${isSelected ? 'selected' : ''}`;
             
             optionItem.innerHTML = `
-                <span class="option-text">${option}</span>
+                <span class="option-text">
+                    ${isSelected ? '✓ ' : ''}${option}
+                    ${isSelected ? '<span class="selected-badge">PICKED</span>' : ''}
+                </span>
                 <button class="remove-btn" onclick="gachaMachine.removeOption('${option}')">×</button>
             `;
             
             this.optionsList.appendChild(optionItem);
         });
+    }
+    
+    renderResults() {
+        if (this.spinResults.length === 0) {
+            this.resultsList.innerHTML = `
+                <div class="no-results">
+                    <span class="placeholder-text">No spins yet! Press SPIN to start collecting results.</span>
+                </div>
+            `;
+            return;
+        }
+        
+        this.resultsList.innerHTML = '';
+        
+        // Display results in reverse order (newest first)
+        const reversedResults = [...this.spinResults].reverse();
+        
+        reversedResults.forEach(result => {
+            const resultItem = document.createElement('div');
+            resultItem.className = 'result-item';
+            
+            const timeString = this.formatTime(result.timestamp);
+            
+            resultItem.innerHTML = `
+                <div>
+                    <span class="result-text">${result.option}</span>
+                    <span class="result-timestamp">${timeString}</span>
+                </div>
+                <span class="result-number">#${result.pickNumber}</span>
+            `;
+            
+            this.resultsList.appendChild(resultItem);
+        });
+    }
+    
+    formatTime(timestamp) {
+        const now = new Date();
+        const diff = now - timestamp;
+        const seconds = Math.floor(diff / 1000);
+        const minutes = Math.floor(seconds / 60);
+        const hours = Math.floor(minutes / 60);
+        
+        if (seconds < 60) {
+            return 'Just now';
+        } else if (minutes < 60) {
+            return `${minutes}m ago`;
+        } else if (hours < 24) {
+            return `${hours}h ago`;
+        } else {
+            return timestamp.toLocaleDateString();
+        }
     }
     
     updateStats() {
@@ -212,7 +328,8 @@ class GachaMachine {
         const data = {
             options: this.options,
             totalPicks: this.totalPicks,
-            lastPick: this.lastPick
+            lastPick: this.lastPick,
+            spinResults: this.spinResults
         };
         localStorage.setItem('gachaMachineData', JSON.stringify(data));
     }
@@ -226,8 +343,15 @@ class GachaMachine {
                 this.totalPicks = data.totalPicks || 0;
                 this.lastPick = data.lastPick || null;
                 
+                // Load spinResults and convert timestamp strings back to Date objects
+                this.spinResults = (data.spinResults || []).map(result => ({
+                    ...result,
+                    timestamp: new Date(result.timestamp)
+                }));
+                
                 this.renderOptions();
                 this.updateStats();
+                this.renderResults();
             } catch (e) {
                 console.error('Error loading saved data:', e);
             }
@@ -236,12 +360,14 @@ class GachaMachine {
     
          resetStats() {
          // Show confirmation dialog
-         if (confirm('Are you sure you want to reset your statistics? This will reset your total picks and last pick history.')) {
+         if (confirm('Are you sure you want to reset your statistics? This will clear all your spin results and statistics.')) {
              this.totalPicks = 0;
              this.lastPick = null;
+             this.spinResults = []; // Clear all spin results
              this.updateStats();
+             this.renderResults(); // Re-render results list (will show empty state)
              this.saveToLocalStorage();
-             this.showNotification('Statistics reset successfully!', 'success');
+             this.showNotification('Statistics and results cleared successfully!', 'success');
              
              // Reset the result display to placeholder
              this.resultDisplay.innerHTML = '<span class="placeholder">Ready to pick?</span>';
@@ -291,7 +417,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Add welcome message
     setTimeout(() => {
-        gachaMachine.showNotification('Welcome to the Kitchen Gacha Machine! Press SPACE to spin!', 'info');
+        gachaMachine.showNotification('Welcome to the Kitchen Gacha Machine! Press SPACE to spin and collect results!', 'info');
     }, 1000);
 });
 
