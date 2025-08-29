@@ -366,6 +366,7 @@ class GachaMachine {
              this.spinResults = []; // Clear all spin results
              this.updateStats();
              this.renderResults(); // Re-render results list (will show empty state)
+             this.renderOptions(); // Re-render options to clear "PICKED" labels
              this.saveToLocalStorage();
              this.showNotification('Statistics and results cleared successfully!', 'success');
              
